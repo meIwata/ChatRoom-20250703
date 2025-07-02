@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <style>
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', '微軟正黑體', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 25px 30px 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+        h2 {
+            margin:0 0 15px 0;
+            text-align: center;
+            color: #333;
+            letter-spacing: 2px;
+        }
+        .nickname-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        #nickname {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        #joinBtn {
+            background: #4f93ff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        #joinBtn:disabled {
+            background: #b3d1ff;
+            cursor: not-allowed;
+        }
+        #chat {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafbfc;
+            padding: 10px;
+            margin: 10px 0 18px 0;
+            font-size: 1em;
+        }
+        .chat-msg {
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        .chat-msg.me {
+            text-align: right;
+            color: #1976d2;
+        }
+        .chat-msg.system {
+            color: #888;
+            text-align: center;
+            font-size: 0.96em;
+        }
+        .msg-bar {
+            display: flex;
+            gap: 10px;
+        }
+        #msg {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        #sendBtn {
+            background: #26c281;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        #sendBtn:disabled {
+            background: #a0eac9;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>聊天室</h2>
+    <div class="nickname-bar">
+        <input id="nickname" placeholder="輸入暱稱">
+        <button id="joinBtn" onclick="connect()">加入聊天室</button>
+    </div>
+    <div id="chat"></div>
+    <div class="msg-bar">
+        <input id="msg" placeholder="訊息內容" onkeydown="if(event.key==='Enter')sendMsg();">
+        <button id="sendBtn" onclick="sendMsg()" disabled>送出</button>
+    </div>
+</div>
+<script>
+    let ws;
+    let myNick = "";
+    const chat = document.getElementById("chat");
+    const nicknameInput = document.getElementById("nickname");
+    const joinBtn = document.getElementById("joinBtn");
+    const msgInput = document.getElementById("msg");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function connect() {
+        myNick = nicknameInput.value.trim();
+        if (!myNick) {
+            alert("請輸入暱稱！");
+            return;
+        }
+        ws = new WebSocket("ws://localhost:8080/chat");
+        ws.onopen = () => {
+            ws.send(myNick);
+            nicknameInput.disabled = true;
+            joinBtn.disabled = true;
+            sendBtn.disabled = false;
+            msgInput.focus();
+        };
+        ws.onmessage = (e) => {
+            let msg = e.data;
+            let className = "chat-msg";
+            if (msg.startsWith("[" + myNick + "]")) className += " me";
+            if (msg.includes("進入聊天室") || msg.includes("離開聊天室") || msg.includes("請輸入暱稱")) className += " system";
+            chat.innerHTML += `<div class="${className}">${escapeHtml(msg)}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        };
+        ws.onclose = () => {
+            chat.innerHTML += `<div class="chat-msg system">您已離線或聊天室已關閉</div>`;
+            nicknameInput.disabled = false;
+            joinBtn.disabled = false;
+            sendBtn.disabled = true;
+        };
+        ws.onerror = () => {
+            chat.innerHTML += `<div class="chat-msg system">連線錯誤，請重新整理</div>`;
+        };
+    }
+    function sendMsg() {
+        let msg = msgInput.value.trim();
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            alert("請先加入聊天室！");
+            return;
+        }
+        if (!msg) return;
+        ws.send(msg);
+        msgInput.value = "";
+        msgInput.focus();
+    }
+    // 防止 XSS
+    function escapeHtml(text){
+        return text.replace(/[&<>"']/g,function(c){
+            return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
+        });
+    }
+</script>
+</body>
+</html>
