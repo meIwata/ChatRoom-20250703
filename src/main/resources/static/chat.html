@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+<div class="container">
+    <h2>聊天室</h2>
+    <div class="nickname-bar">
+        <input id="nickname" placeholder="輸入暱稱">
+        <button id="joinBtn" onclick="connect()">加入聊天室</button>
+    </div>
+    <div id="chat"></div>
+    <div class="msg-bar">
+        <input id="msg" placeholder="訊息內容" onkeydown="if(event.key==='Enter')sendMsg();">
+        <button id="sendBtn" onclick="sendMsg()" disabled>送出</button>
+    </div>
+</div>
+<script src="js/chat.js"></script>
+</body>
+</html>

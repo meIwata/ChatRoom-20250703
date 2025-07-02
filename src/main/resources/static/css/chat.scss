@@ -1,0 +1,98 @@
+$primary: #4f93ff;
+$success: #26c281;
+$background: #f0f2f5;
+
+body {
+  background: $background;
+  font-family: 'Segoe UI', '微軟正黑體', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  background: #fff;
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 25px 30px 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+h2 {
+  margin:0 0 15px 0;
+  text-align: center;
+  color: #333;
+  letter-spacing: 2px;
+}
+.nickname-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+#nickname {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+#joinBtn {
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s;
+  &:disabled {
+    background: #b3d1ff;
+    cursor: not-allowed;
+  }
+}
+#chat {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafbfc;
+  padding: 10px;
+  margin: 10px 0 18px 0;
+  font-size: 1em;
+}
+.chat-msg {
+  margin-bottom: 5px;
+  line-height: 1.5;
+  &.me {
+    text-align: right;
+    color: #1976d2;
+  }
+  &.system {
+    color: #888;
+    text-align: center;
+    font-size: 0.96em;
+  }
+}
+.msg-bar {
+  display: flex;
+  gap: 10px;
+}
+#msg {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+#sendBtn {
+  background: $success;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s;
+  &:disabled {
+    background: #a0eac9;
+    cursor: not-allowed;
+  }
+}
