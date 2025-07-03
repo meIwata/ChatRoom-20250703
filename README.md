@@ -37,22 +37,11 @@ If the server starts successfully, you'll see the following output:
 2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
 2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
 ```
-
-### Run EngineMain on Application.kt
-### Run on ngrok
-### add ngrok config add-authtoken XXXXXXXXXXXXXXXXXXXXX
-### ngrok http 8080
-### get the URL from ngrok -> https://....ngrok-free.app
-
 ---
-
 ## 如何用 ngrok 讓聊天室外網可連
 
 1. 啟動 Ktor 伺服器
-   - 在 IDE 執行 Application.kt，或在終端機輸入：
-     ```
-     ./gradlew run
-     ```
+   - 在 IDE 執行 Application.kt
 
 2. 註冊 ngrok 並安裝
    - 前往 [ngrok 官網](https://ngrok.com/) 註冊帳號並下載 ngrok。
