@@ -12,7 +12,10 @@ function connect() {
         alert("請輸入暱稱！");
         return;
     }
-    ws = new WebSocket("ws://localhost:8080/chat");
+    // 自動偵測協議與主機，支援 ngrok 及本機
+    const wsProtocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const wsHost = location.host;
+    ws = new WebSocket(`${wsProtocol}//${wsHost}/chat`);
     ws.onopen = () => {
         ws.send(myNick);
         nicknameInput.disabled = true;

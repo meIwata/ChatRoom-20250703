@@ -19,6 +19,7 @@ fun Application.module() {
     install(WebSockets) {
         pingPeriod = 15.seconds
     }
+    configureRouting() // 加入這行，啟用 Routing.kt 的路由設定
     routing {
         webSocket("/chat") {
             send("請輸入暱稱：")

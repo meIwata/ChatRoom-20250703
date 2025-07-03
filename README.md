@@ -39,4 +39,39 @@ If the server starts successfully, you'll see the following output:
 ```
 
 ### Run EngineMain on Application.kt
-### Open chat.html from the file system and open multiple chat rooms for testing
+### Run on ngrok
+### add ngrok config add-authtoken XXXXXXXXXXXXXXXXXXXXX
+### ngrok http 8080
+### get the URL from ngrok -> https://....ngrok-free.app
+
+---
+
+## 如何用 ngrok 讓聊天室外網可連
+
+1. 啟動 Ktor 伺服器
+   - 在 IDE 執行 Application.kt，或在終端機輸入：
+     ```
+     ./gradlew run
+     ```
+
+2. 註冊 ngrok 並安裝
+   - 前往 [ngrok 官網](https://ngrok.com/) 註冊帳號並下載 ngrok。
+   - 解壓縮後，將 ngrok.exe 放到你想要的位置。
+
+3. 設定 ngrok authtoken（只需做一次）
+   - 在終端機輸入：
+     ```
+     ngrok config add-authtoken 你的-ngrok-authtoken
+     ```
+
+4. 啟動 ngrok 轉發本機 8080 port
+   - 在終端機輸入：
+     ```
+     ngrok http 8080
+     ```
+
+5. 取得 ngrok 公開網址
+   - 終端機會顯示類似 `https://xxxx-xxxx-xxxx.ngrok-free.app` 的網址。
+
+6. 分享網址給其他人
+   - 其他人用這個網址就能連到你的聊天室。
